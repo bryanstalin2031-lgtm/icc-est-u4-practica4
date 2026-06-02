@@ -1,64 +1,62 @@
-import java.util.concurrent.Callable;
 import controllers.SortPersonaMethods;
 import models.Persona;
+import models.Resultado;
 import utils.Benchmarking;
+import java.util.concurrent.Callable;
 
 public class App {
-
-    public static void main(String[] args) throws Exception {
-        int[] samples = {10000, 50000, 100000};
+    public static void main(String[] args) {
         SortPersonaMethods metodos = new SortPersonaMethods();
+        int[] tamanos = {10000, 50000, 100000};
 
-        for (int size : samples) {
-            ejecutarEscenarioDesordenado(size, metodos);
-            ejecutarEscenarioCasiOrdenado(size, metodos);
+        for (int size : tamanos) {
+
+            Persona[] base = generarPersonas(size);
+            Persona[] copiaInsercion = base.clone();
+            Persona[] copiaQuick = base.clone();
+
+            Callable<Void> insertion = () -> {
+                metodos.insertionSort(copiaInsercion);
+                return null;
+            };
+            Callable<Void> quick = () -> {
+                metodos.quickSort(copiaQuick, 0, copiaQuick.length - 1);
+                return null;
+            };
+
+            Resultado r1 = Benchmarking.medirTiempo(insertion, "Inserción", "Desordenado", copiaInsercion.length);
+            Resultado r2 = Benchmarking.medirTiempo(quick, "QuickSort", "Desordenado", copiaQuick.length);
+
+            System.out.println(r1);
+            System.out.println(r2);
+
+            Persona[] base2 = generarPersonas(size);
+            metodos.quickSort(base2, 0, base2.length - 1);
+
+            Persona[] nuevoArreglo = new Persona[base2.length + 1];
+            System.arraycopy(base2, 0, nuevoArreglo, 0, base2.length);
+            nuevoArreglo[nuevoArreglo.length - 1] = new Persona("PersonaExtra", (int)(Math.random() * 101));
+
+            Persona[] copiaInsercion2 = nuevoArreglo.clone();
+            Persona[] copiaQuick2 = nuevoArreglo.clone();
+
+            Callable<Void> insertion2 = () -> {
+                metodos.insertionSort(copiaInsercion2);
+                return null;
+            };
+            Callable<Void> quick2 = () -> {
+                metodos.quickSort(copiaQuick2, 0, copiaQuick2.length - 1);
+                return null;
+            };
+
+            Resultado r3 = Benchmarking.medirTiempo(insertion2, "Inserción", "Casi ordenado + 1 persona", copiaInsercion2.length);
+            Resultado r4 = Benchmarking.medirTiempo(quick2, "QuickSort", "Casi ordenado + 1 persona", copiaQuick2.length);
+
+            System.out.println(r3);
+            System.out.println(r4);
         }
     }
 
-    public static void ejecutarEscenarioDesordenado(int size, SortPersonaMethods metodos) throws Exception {
-        Persona[] base = generarPersonas(size);
-        Persona[] copiaInsercion = base.clone();
-        Persona[] copiaQuickSort = base.clone();
-
-        Callable<Void> taskInsertion = () -> {
-            metodos.insertionSort(copiaInsercion);
-            return null;
-        };
-        Callable<Void> taskQuick = () -> {
-            metodos.qucikSort(copiaQuickSort, 0, copiaQuickSort.length - 1);
-            return null;
-        };
-        var r1 = Benchmarking.medirTiempo(taskInsertion, "Inserción", "Desordenado", size);
-        var r2 = Benchmarking.medirTiempo(taskQuick, "QuickSort", "Desordenado", size);
-        imprimirResultado(r1);
-        imprimirResultado(r2);
-    }
-
-    public static void ejecutarEscenarioCasiOrdenado(int size, SortPersonaMethods metodos) throws Exception {
-        Persona[] base = generarPersonas(size);
-        metodos.qucikSort(base, 0, base.length - 1);
-
-        Persona[] baseMasUno = new Persona[base.length + 1];
-   
-        System.arraycopy(base, 0, baseMasUno, 0, base.length);
-        baseMasUno[baseMasUno.length - 1] = new Persona("Persona Extra", (int)(Math.random() * 101));
-        Persona[] copiaInsercion = baseMasUno.clone();
-        Persona[] copiaQuickSort = baseMasUno.clone();
-
-        Callable<Void> taskInsertion = () -> {
-            metodos.insertionSort(copiaInsercion);
-            return null;
-        };
-        Callable<Void> taskQuick = () -> {
-            metodos.qucikSort(copiaQuickSort, 0, copiaQuickSort.length - 1);
-            return null;
-        };
-        var r1 = Benchmarking.medirTiempo(taskInsertion, "Inserción", "Casi Ordenado", baseMasUno.length);
-        var r2 = Benchmarking.medirTiempo(taskQuick, "QuickSort", "Casi Ordenado", baseMasUno.length);
-
-        imprimirResultado(r1);
-        imprimirResultado(r2);
-    }
     public static Persona[] generarPersonas(int cantidad) {
         Persona[] personas = new Persona[cantidad];
         for (int i = 0; i < cantidad; i++) {
@@ -68,13 +66,5 @@ public class App {
         }
         return personas;
     }
-    private static void imprimirResultado(Object resultado) {
-        if (resultado != null) {
-            System.out.println(resultado.toString());
-        }
-    }
 }
-
-
-
 

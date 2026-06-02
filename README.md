@@ -1,18 +1,28 @@
-## Getting Started
+Practica N4
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Asginatura Estructura de datos
 
-## Folder Structure
+Nombre : Bryam Carchi
 
-The workspace contains two folders by default, where:
+Fecha de entrega : 2/6/2026
+![alt text](<assets/Captura de pantalla 2026-06-02 a la(s) 5.50.21 p. m..png>)
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+¿Cual algortimo fue el mas rapido en el escenario desordenado?
+Para mi el algoritmo mas rapido quickSort, ya que con 100000 es el que puede ayudar con arreglos demasiados grandes.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+¿Que algoritmo fue mas rapido en el escenario casi ordenado?
+El insercion fue mas rapido porque en arreglo ya casi ordenados es mas
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+¿El crecimiento del tamaño de muestra afectó por igual a los dos algoritmos?
+No, insercion aumento drasticamente en tiempo conforme aumento el tamaño.
 
-## Dependency Management
+¿Por qué Inserción puede mejorar cuando el arreglo ya está casi ordenado?
+Porque el metodo de insercion solo hace unas pocas comparaciones, asi este evita recorrer todo el arreglo.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+¿Por qué QuickSort suele ser mejor cuando los datos están muy desordenados?
+Es mejor porque divide el problema en sub arreglos y logra asi un mejor rendimiento que el de insercion en datos desordenados.
+
+Conclusiones
+El mejor en velocidad fue QuickSort, que dejó atrás a inserción con tiempos bajísimos. Sin embargo, inserción tuvo su momento : cuando los datos ya estaban casi ordenados, le ganó el puesto a QuickSort, demostrando que es la opción ideal para arreglos con orden parcial.
+
+Al final, el tamaño del arreglo les afecta muy diferente. Mientras que inserción se ahoga y escala fatal con arreglos grandes, QuickSort se mantiene bajo control .
